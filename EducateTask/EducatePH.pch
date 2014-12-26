@@ -1,0 +1,17 @@
+//
+//  EducatePH.pch
+//  EducateTask
+//
+//  Created by Admin on 25.12.14.
+//  Copyright (c) 2014 rth. All rights reserved.
+//
+
+#ifndef EducateTask_EducatePH_pch
+#define EducateTask_EducatePH_pch
+
+
+#define APP_DELEGATE ((AppDelegate *)[[UIApplication sharedApplication] delegate])
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif
