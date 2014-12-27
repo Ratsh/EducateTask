@@ -7,9 +7,11 @@
 //
 
 #import <AFNetworking/AFNetworking.h>
+#import <UIImageView+WebCache.h>
 
 #import "PicturesCollectionViewController.h"
 #import "PictureCollectionViewCell.h"
+#import "AppDelegate.h"
 
 @interface PicturesCollectionViewController () {
     NSMutableArray      *dataArray;
@@ -76,10 +78,10 @@ static NSString * const reuseIdentifier         = @"CollectCell";
     UIView      *view           = [UIView new];
     UILabel     *label          = [UILabel new];
     
-    view.backgroundColor        = [UIColor greenColor];
+    view.backgroundColor        = [UIColor yellowColor];
     view.frame                  = [UIScreen mainScreen].bounds;
     view.hidden                 = YES;
-    [self.view addSubview:view];
+    [APP_DELEGATE.window addSubview:view];
     
     label.text                  = @"Loading...";
     label.frame                 = CGRectMake((view.frame.size.width - 100.0) / 2,
@@ -103,9 +105,8 @@ static NSString * const reuseIdentifier         = @"CollectCell";
     
     [cell layoutIfNeeded];
     if (imgUrlString.length > 0) {
-        cell.cellImageView.image                = [UIImage imageWithData:
-                                                   [NSData dataWithContentsOfURL:
-                                                    [NSURL URLWithString:imgUrlString]]];
+        
+        [cell.cellImageView sd_setImageWithURL:[NSURL URLWithString:imgUrlString]placeholderImage:[UIImage imageNamed:@"kitten"]];
     }
     
     cell.cellImageView.clipsToBounds            = YES;
@@ -123,6 +124,11 @@ static NSString * const reuseIdentifier         = @"CollectCell";
     CGFloat     itemSize                        = (screenWidth - 2 * minIterSpacing - insets) / 3;
     
     return CGSizeMake(itemSize, itemSize);
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    [self.collectionView.collectionViewLayout invalidateLayout];
 }
 
 #pragma mark <UICollectionViewDelegate>
