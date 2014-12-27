@@ -21,6 +21,7 @@
 		8433DB831A477F740028DD10 /* AttrText.m in Sources */ = {isa = PBXBuildFile; fileRef = 8433DB821A477F740028DD10 /* AttrText.m */; };
 		8474C68B1A473570008FD1C8 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8474C6891A473570008FD1C8 /* MainViewController.m */; };
 		8474C68C1A473570008FD1C8 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8474C68A1A473570008FD1C8 /* MainViewController.xib */; };
+		84AD899E1A4F11EA00296F9A /* etImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AD899D1A4F11EA00296F9A /* etImageView.m */; };
 		84B246071A4CE26B00EC19FD /* PicturesCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B246051A4CE26B00EC19FD /* PicturesCollectionViewController.m */; };
 		84B246081A4CE26B00EC19FD /* PicturesCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84B246061A4CE26B00EC19FD /* PicturesCollectionViewController.xib */; };
 		84B2460C1A4CECD300EC19FD /* PictureCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B2460A1A4CECD300EC19FD /* PictureCollectionViewCell.m */; };
@@ -61,6 +62,8 @@
 		8474C6881A473570008FD1C8 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		8474C6891A473570008FD1C8 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		8474C68A1A473570008FD1C8 /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
+		84AD899C1A4F11EA00296F9A /* etImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = etImageView.h; sourceTree = "<group>"; };
+		84AD899D1A4F11EA00296F9A /* etImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = etImageView.m; sourceTree = "<group>"; };
 		84B246031A4C3BB400EC19FD /* EducatePH.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EducatePH.pch; sourceTree = "<group>"; };
 		84B246041A4CE26B00EC19FD /* PicturesCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicturesCollectionViewController.h; sourceTree = "<group>"; };
 		84B246051A4CE26B00EC19FD /* PicturesCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicturesCollectionViewController.m; sourceTree = "<group>"; };
@@ -146,6 +149,8 @@
 				84B246091A4CECD300EC19FD /* PictureCollectionViewCell.h */,
 				84B2460A1A4CECD300EC19FD /* PictureCollectionViewCell.m */,
 				84B2460B1A4CECD300EC19FD /* PictureCollectionViewCell.xib */,
+				84AD899C1A4F11EA00296F9A /* etImageView.h */,
+				84AD899D1A4F11EA00296F9A /* etImageView.m */,
 			);
 			path = EducateTask;
 			sourceTree = "<group>";
@@ -329,6 +334,7 @@
 				8423D0A91A473323009C9605 /* AppDelegate.m in Sources */,
 				84B246071A4CE26B00EC19FD /* PicturesCollectionViewController.m in Sources */,
 				84B2460C1A4CECD300EC19FD /* PictureCollectionViewCell.m in Sources */,
+				84AD899E1A4F11EA00296F9A /* etImageView.m in Sources */,
 				8423D0A61A473323009C9605 /* main.m in Sources */,
 				8433DB771A4745DF0028DD10 /* TableViewController.m in Sources */,
 				8474C68B1A473570008FD1C8 /* MainViewController.m in Sources */,

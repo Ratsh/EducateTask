@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+#import "etImageView.h"
+
 @interface PictureCollectionViewCell : UICollectionViewCell
 
-@property (weak, nonatomic) IBOutlet UIImageView *cellImageView;
+@property (weak, nonatomic) IBOutlet etImageView *cellImageView;
 
 @end

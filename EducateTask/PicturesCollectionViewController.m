@@ -110,7 +110,6 @@ static NSString * const reuseIdentifier         = @"CollectCell";
     }
     
     cell.cellImageView.clipsToBounds            = YES;
-    cell.cellImageView.layer.cornerRadius       = cell.cellImageView.frame.size.width / 2;
 
     return cell;
 }
