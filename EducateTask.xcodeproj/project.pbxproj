@@ -126,6 +126,8 @@
 		8423D0A21A473323009C9605 /* EducateTask */ = {
 			isa = PBXGroup;
 			children = (
+				84BF8CCB1A59A7D300FBEA1D /* CollectionView */,
+				84BF8CCA1A59A7AD00FBEA1D /* TableView */,
 				8423D0A71A473323009C9605 /* AppDelegate.h */,
 				8423D0A81A473323009C9605 /* AppDelegate.m */,
 				8423D0AD1A473323009C9605 /* Images.xcassets */,
@@ -137,20 +139,6 @@
 				8474C6881A473570008FD1C8 /* MainViewController.h */,
 				8474C6891A473570008FD1C8 /* MainViewController.m */,
 				8474C68A1A473570008FD1C8 /* MainViewController.xib */,
-				8433DB741A4745DF0028DD10 /* TableViewController.h */,
-				8433DB751A4745DF0028DD10 /* TableViewController.m */,
-				8433DB761A4745DF0028DD10 /* TableViewController.xib */,
-				8433DB791A4754B30028DD10 /* PictureTableViewCell.h */,
-				8433DB7A1A4754B30028DD10 /* PictureTableViewCell.m */,
-				8433DB7B1A4754B30028DD10 /* PictureTableViewCell.xib */,
-				84B246041A4CE26B00EC19FD /* PicturesCollectionViewController.h */,
-				84B246051A4CE26B00EC19FD /* PicturesCollectionViewController.m */,
-				84B246061A4CE26B00EC19FD /* PicturesCollectionViewController.xib */,
-				84B246091A4CECD300EC19FD /* PictureCollectionViewCell.h */,
-				84B2460A1A4CECD300EC19FD /* PictureCollectionViewCell.m */,
-				84B2460B1A4CECD300EC19FD /* PictureCollectionViewCell.xib */,
-				84AD899C1A4F11EA00296F9A /* etImageView.h */,
-				84AD899D1A4F11EA00296F9A /* etImageView.m */,
 			);
 			path = EducateTask;
 			sourceTree = "<group>";
@@ -180,6 +168,34 @@
 				8423D0BB1A473323009C9605 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		84BF8CCA1A59A7AD00FBEA1D /* TableView */ = {
+			isa = PBXGroup;
+			children = (
+				8433DB741A4745DF0028DD10 /* TableViewController.h */,
+				8433DB751A4745DF0028DD10 /* TableViewController.m */,
+				8433DB761A4745DF0028DD10 /* TableViewController.xib */,
+				8433DB791A4754B30028DD10 /* PictureTableViewCell.h */,
+				8433DB7A1A4754B30028DD10 /* PictureTableViewCell.m */,
+				8433DB7B1A4754B30028DD10 /* PictureTableViewCell.xib */,
+			);
+			name = TableView;
+			sourceTree = "<group>";
+		};
+		84BF8CCB1A59A7D300FBEA1D /* CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				84B246041A4CE26B00EC19FD /* PicturesCollectionViewController.h */,
+				84B246051A4CE26B00EC19FD /* PicturesCollectionViewController.m */,
+				84B246061A4CE26B00EC19FD /* PicturesCollectionViewController.xib */,
+				84B246091A4CECD300EC19FD /* PictureCollectionViewCell.h */,
+				84B2460A1A4CECD300EC19FD /* PictureCollectionViewCell.m */,
+				84B2460B1A4CECD300EC19FD /* PictureCollectionViewCell.xib */,
+				84AD899C1A4F11EA00296F9A /* etImageView.h */,
+				84AD899D1A4F11EA00296F9A /* etImageView.m */,
+			);
+			name = CollectionView;
 			sourceTree = "<group>";
 		};
 		8E680FAE5B11C95C547F06CD /* Frameworks */ = {

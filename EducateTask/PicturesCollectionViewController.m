@@ -16,6 +16,9 @@
 @interface PicturesCollectionViewController () {
     NSMutableArray      *dataArray;
     UIView              *loadingView;
+    
+    NSNumber            *nextPageStartIndex;
+    NSInteger           requestCounter;
 }
 
 @end
@@ -31,6 +34,8 @@ static NSString * const reuseIdentifier         = @"CollectCell";
     
     dataArray                                   = @[].mutableCopy;
     loadingView                                 = [self loadingViewInit];
+    
+    requestCounter                              = 1;
 
     [self.collectionView registerNib:[UINib nibWithNibName:@"PictureCollectionViewCell"
                                                     bundle:[NSBundle mainBundle]]
@@ -39,7 +44,6 @@ static NSString * const reuseIdentifier         = @"CollectCell";
     
     AFHTTPRequestOperationManager *requestManager = [[AFHTTPRequestOperationManager alloc]
                                                      initWithBaseURL:[NSURL URLWithString:@"https://www.googleapis.com"]];
-//    requestManager.responseSerializer = [AFJSONResponseSerializer serializer];
     NSString        *searchEngine               = @"002767154513819630741%3Alebyppo6fhw";
     NSString        *query                      = @"kitten";
     NSString        *key                        = @"AIzaSyC7G23Qc_vd-Sllxo_BCuMkayMYIaeT9HA";
@@ -60,8 +64,15 @@ static NSString * const reuseIdentifier         = @"CollectCell";
             
             [dataArray addObject:urlString];
         }
+        nextPageStartIndex                      = responseObject[@"queries"][@"nextPage"][0][@"startIndex"];
+
         [self.collectionView reloadData];
         loadingView.hidden                      = YES;
+        
+        [self requestWithSearchString:[NSString stringWithFormat:
+                                       @"https://www.googleapis.com/customsearch/v1?cx=%@&q=%@&key=%@",
+                                       searchEngine, query, key]
+                           startIndex:nextPageStartIndex];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"fail, %@", error);
@@ -72,6 +83,42 @@ static NSString * const reuseIdentifier         = @"CollectCell";
     //@"search?q=kitten&tbm=isch&alt=atom"
     //002767154513819630741:lebyppo6fhw
     //    https://www.google.com/search?q=kitten&tbm=isch
+}
+
+- (void)requestWithSearchString:(NSString *)searchString startIndex:(NSNumber *)startIndex {
+    if (requestCounter < 5) {
+        AFHTTPRequestOperationManager *requestManager = [[AFHTTPRequestOperationManager alloc]
+                                                         initWithBaseURL:[NSURL URLWithString:@"https://www.googleapis.com"]];
+        
+        requestCounter                         += 1;
+
+        [requestManager GET:[NSString stringWithFormat:@"%@&start=%@", searchString, startIndex] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            for (NSDictionary *item in responseObject[@"items"]) {
+                NSString    *urlString              = item[@"pagemap"][@"cse_image"][0][@"src"];
+                
+                if (urlString == nil) {
+                    urlString                       = @"";
+                }
+                
+                [dataArray addObject:urlString];
+                
+                [self.collectionView performBatchUpdates:^{
+                    [self.collectionView insertItemsAtIndexPaths:@[
+                                                                   [NSIndexPath indexPathForRow:dataArray.count - 1
+                                                                                      inSection:0]
+                                                                   ]];
+                } completion:^(BOOL finished) {
+                    
+                }];
+            }
+            nextPageStartIndex                      = responseObject[@"nextPage"][@"startIndex"];
+            [self requestWithSearchString:searchString startIndex:nextPageStartIndex];
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"fail, %@", error);
+        }];
+    }
 }
 
 - (UIView *)loadingViewInit {
@@ -106,7 +153,8 @@ static NSString * const reuseIdentifier         = @"CollectCell";
     [cell layoutIfNeeded];
     if (imgUrlString.length > 0) {
         
-        [cell.cellImageView sd_setImageWithURL:[NSURL URLWithString:imgUrlString]placeholderImage:[UIImage imageNamed:@"kitten"]];
+        [cell.cellImageView sd_setImageWithURL:[NSURL URLWithString:imgUrlString]
+                              placeholderImage:[UIImage imageNamed:@"kitten"]];
     }
     
     cell.cellImageView.clipsToBounds            = YES;

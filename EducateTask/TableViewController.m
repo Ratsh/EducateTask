@@ -109,7 +109,8 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    PictureTableViewCell    *cell               = [tableView dequeueReusableCellWithIdentifier:@"tableCell"];
+    PictureTableViewCell    *cell               = [tableView dequeueReusableCellWithIdentifier:@"tableCell"
+                                                                                  forIndexPath:indexPath];
     AttrText        *attrTextEntity             = (AttrText *)dataArray[indexPath.row];
     
     cell.pictureImgView.image                   = [UIImage imageNamed:@"kitten"];
@@ -125,6 +126,81 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 90.0;
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row % 2 == 0) {
+        return UITableViewCellEditingStyleDelete;
+    } else {
+        return UITableViewCellEditingStyleInsert;
+    }
+}
+
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    //    NSLog(@"%s", __PRETTY_FUNCTION__);
+    NSManagedObjectContext  *context            = APP_DELEGATE.managedObjectContext;
+    if (editingStyle == UITableViewCellEditingStyleInsert) {
+        
+        AttrText    *newRowEntity               = [NSEntityDescription insertNewObjectForEntityForName:@"AttrText"
+                                                                                inManagedObjectContext:context];
+        newRowEntity.attrTextValue              = @"ololoabcdf";
+        [APP_DELEGATE saveContext];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"increaseAttrText"
+                                                            object:nil];
+        
+        [dataArray insertObject: newRowEntity
+                        atIndex:indexPath.row];
+        [_tableView insertRowsAtIndexPaths:@[indexPath]
+                          withRowAnimation:UITableViewRowAnimationFade];
+        
+    } else if (editingStyle == UITableViewCellEditingStyleDelete) {
+        
+        [context deleteObject:dataArray[indexPath.row]];
+        [APP_DELEGATE saveContext];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"decreaseAttrText"
+                                                            object:nil];
+        
+        [dataArray removeObjectAtIndex:indexPath.row];
+        [_tableView deleteRowsAtIndexPaths:@[indexPath]
+                          withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row == 2) {
+        NSManagedObjectContext  *context        = APP_DELEGATE.managedObjectContext;
+        
+        [_tableView beginUpdates];
+        [context deleteObject:dataArray[indexPath.row]];
+        [dataArray removeObject:dataArray[indexPath.row]];
+        
+        AttrText    *newRowEntity               = [NSEntityDescription insertNewObjectForEntityForName:@"AttrText"
+                                                                                inManagedObjectContext:context];
+        newRowEntity.attrTextValue              = @"mmmmm";
+        [dataArray insertObject: newRowEntity
+                        atIndex:indexPath.row];
+        newRowEntity                            = [NSEntityDescription insertNewObjectForEntityForName:@"AttrText"
+                                                                                inManagedObjectContext:context];
+        newRowEntity.attrTextValue              = @"mmmmm222";
+        [dataArray insertObject: newRowEntity
+                        atIndex:indexPath.row + 1];
+        [APP_DELEGATE saveContext];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"increaseAttrText"
+                                                            object:nil];
+        
+        [_tableView deleteRowsAtIndexPaths:@[indexPath]
+                          withRowAnimation:UITableViewRowAnimationFade];
+        [_tableView insertRowsAtIndexPaths:@[
+                                             indexPath,
+                                             [NSIndexPath indexPathForRow:indexPath.row + 1
+                                                                inSection:indexPath.section]
+                                             ]
+                          withRowAnimation:UITableViewRowAnimationFade];
+        
+        [_tableView endUpdates];
+    }
 }
 
 - (NSAttributedString *)attrStringFromString:(NSString *)text {
@@ -197,87 +273,8 @@
     _addButton.enabled                          = !_addButton.enabled;
 }
 
-//- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-//    return YES;
-//}
-
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row % 2 == 0) {
-        return UITableViewCellEditingStyleDelete;
-    } else {
-        return UITableViewCellEditingStyleInsert;
-    }
-}
-
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-//    NSLog(@"%s", __PRETTY_FUNCTION__);
-    NSManagedObjectContext  *context            = APP_DELEGATE.managedObjectContext;
-    if (editingStyle == UITableViewCellEditingStyleInsert) {
-        
-        AttrText    *newRowEntity               = [NSEntityDescription insertNewObjectForEntityForName:@"AttrText"
-                                                                                inManagedObjectContext:context];
-        newRowEntity.attrTextValue              = @"ololoabcdf";
-        [APP_DELEGATE saveContext];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"increaseAttrText"
-                                                            object:nil];
-        
-        [dataArray insertObject: newRowEntity
-                        atIndex:indexPath.row];
-        [_tableView insertRowsAtIndexPaths:@[indexPath]
-                          withRowAnimation:UITableViewRowAnimationFade];
-        
-    } else if (editingStyle == UITableViewCellEditingStyleDelete) {
-        
-        [context deleteObject:dataArray[indexPath.row]];
-        [APP_DELEGATE saveContext];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"decreaseAttrText"
-                                                            object:nil];
-        
-        [dataArray removeObjectAtIndex:indexPath.row];
-        [_tableView deleteRowsAtIndexPaths:@[indexPath]
-                          withRowAnimation:UITableViewRowAnimationFade];
-    }
-}
-
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     [self.view endEditing:YES];
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 2) {
-        NSManagedObjectContext  *context        = APP_DELEGATE.managedObjectContext;
-        
-        [_tableView beginUpdates];
-        [context deleteObject:dataArray[indexPath.row]];
-        [dataArray removeObject:dataArray[indexPath.row]];
-        
-        AttrText    *newRowEntity               = [NSEntityDescription insertNewObjectForEntityForName:@"AttrText"
-                                                                                inManagedObjectContext:context];
-        newRowEntity.attrTextValue              = @"mmmmm";
-        [dataArray insertObject: newRowEntity
-                        atIndex:indexPath.row];
-        newRowEntity                            = [NSEntityDescription insertNewObjectForEntityForName:@"AttrText"
-                                                                                inManagedObjectContext:context];
-        newRowEntity.attrTextValue              = @"mmmmm222";
-        [dataArray insertObject: newRowEntity
-                        atIndex:indexPath.row + 1];
-        [APP_DELEGATE saveContext];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"increaseAttrText"
-                                                            object:nil];
-        
-        [_tableView deleteRowsAtIndexPaths:@[indexPath]
-                          withRowAnimation:UITableViewRowAnimationFade];
-        [_tableView insertRowsAtIndexPaths:@[
-                                             indexPath,
-                                             [NSIndexPath indexPathForRow:indexPath.row + 1
-                                                                inSection:indexPath.section]
-                                             ]
-                          withRowAnimation:UITableViewRowAnimationFade];
-        
-        [_tableView endUpdates];
-    }
 }
 
 @end
