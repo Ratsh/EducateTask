@@ -19,6 +19,8 @@
     
     NSNumber            *nextPageStartIndex;
     NSInteger           requestCounter;
+    
+    NSMutableArray      *queueArray;
 }
 
 @end
@@ -36,6 +38,7 @@ static NSString * const reuseIdentifier         = @"CollectCell";
     loadingView                                 = [self loadingViewInit];
     
     requestCounter                              = 1;
+    queueArray                                  = @[].mutableCopy;
 
     [self.collectionView registerNib:[UINib nibWithNibName:@"PictureCollectionViewCell"
                                                     bundle:[NSBundle mainBundle]]
@@ -100,25 +103,33 @@ static NSString * const reuseIdentifier         = @"CollectCell";
                 if (urlString == nil) {
                     urlString                       = @"";
                 }
-                
-                [dataArray addObject:urlString];
-                
-                [self.collectionView performBatchUpdates:^{
-                    [self.collectionView insertItemsAtIndexPaths:@[
-                                                                   [NSIndexPath indexPathForRow:dataArray.count - 1
-                                                                                      inSection:0]
-                                                                   ]];
-                } completion:^(BOOL finished) {
-                    
-                }];
+                [queueArray addObject:urlString];
             }
-            nextPageStartIndex                      = responseObject[@"nextPage"][@"startIndex"];
+            [self collectionInsert];
+            nextPageStartIndex                      = responseObject[@"queries"][@"nextPage"][0][@"startIndex"];
             [self requestWithSearchString:searchString startIndex:nextPageStartIndex];
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"fail, %@", error);
         }];
     }
+}
+
+- (void)collectionInsert {
+    if (queueArray.count == 0) {
+        return;
+    }
+    
+    [self.collectionView performBatchUpdates:^{
+        [dataArray addObject:queueArray[0]];
+        [self.collectionView insertItemsAtIndexPaths:@[
+                                                       [NSIndexPath indexPathForRow:dataArray.count - 1
+                                                                          inSection:0]
+                                                       ]];
+        [queueArray removeObjectAtIndex:0];
+    } completion:^(BOOL finished) {
+        [self collectionInsert];
+    }];
 }
 
 - (UIView *)loadingViewInit {
